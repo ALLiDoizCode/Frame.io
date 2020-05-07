@@ -9,11 +9,13 @@
 import UIKit
 
 class ProjectTableViewCell: UITableViewCell {
-    var projectitle = UILabel()
+    var projecTitle = UILabel()
+    var projecTeam = UILabel()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.addSubview(projectitle)
+        self.addSubview(projecTitle)
+        self.addSubview(projecTeam)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -25,10 +27,15 @@ class ProjectTableViewCell: UITableViewCell {
     }
     
     override func layoutSubviews() {
-        projectitle.translatesAutoresizingMaskIntoConstraints = false
-        projectitle.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        projectitle.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        projectitle.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.42).isActive = true
+        projecTitle.translatesAutoresizingMaskIntoConstraints = false
+        projecTitle.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        projecTitle.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        projecTitle.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8).isActive = true
+        
+        projecTeam.translatesAutoresizingMaskIntoConstraints = false
+        projecTeam.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        projecTeam.topAnchor.constraint(equalTo: projecTitle.topAnchor, constant: 20).isActive = true
+        projecTeam.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8).isActive = true
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -42,12 +49,21 @@ class ProjectTableViewCell: UITableViewCell {
         
     }
     
-    func setupCell(project:Project?) {
+    func setupCell(project:Project?,team:String?) {
         
-        projectitle.text = project?.attributes.name
-        projectitle.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
-        projectitle.textColor = .darkGray
-        projectitle.textAlignment = .center
+        projecTitle.text = project?.attributes.name
+        projecTitle.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
+        projecTitle.textColor = .darkGray
+        projecTitle.textAlignment = .center
+        
+        guard let team = team else {
+            return
+        }
+        
+        projecTeam.text = team
+        projecTeam.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
+        projecTeam.textColor = .darkGray
+        projecTeam.textAlignment = .center
     }
 
 }

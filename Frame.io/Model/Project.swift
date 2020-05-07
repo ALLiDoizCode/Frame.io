@@ -49,3 +49,13 @@ final class OrderedTeam {
         self.project = projects
     }
 }
+
+final class RecentProject {
+    let team:String
+    var project:Project
+    
+    init(team:String, projects:Project) {
+        self.team = team
+        self.project = projects
+    }
+}

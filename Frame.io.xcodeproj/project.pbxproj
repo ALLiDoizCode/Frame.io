@@ -31,6 +31,7 @@
 		4D701BA824645BAD00CFB314 /* ServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D701BA724645BAD00CFB314 /* ServiceError.swift */; };
 		4D701BAA2464781900CFB314 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D701BA92464781900CFB314 /* Main.storyboard */; };
 		4D701BAC24647BFD00CFB314 /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D701BAB24647BFD00CFB314 /* extension.swift */; };
+		4D701BAE246492E800CFB314 /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D701BAD246492E800CFB314 /* SpinnerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 		4D701BA724645BAD00CFB314 /* ServiceError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceError.swift; sourceTree = "<group>"; };
 		4D701BA92464781900CFB314 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		4D701BAB24647BFD00CFB314 /* extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension.swift; sourceTree = "<group>"; };
+		4D701BAD246492E800CFB314 /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -223,6 +225,7 @@
 		4D701B942463CBCE00CFB314 /* Projects */ = {
 			isa = PBXGroup;
 			children = (
+				4D701BAD246492E800CFB314 /* SpinnerViewController.swift */,
 				4D701B962463CBFF00CFB314 /* ProjectsContract.swift */,
 				4D701B972463CBFF00CFB314 /* ProjectsInteractor.swift */,
 				4D701B982463CBFF00CFB314 /* ProjectsPresenter.swift */,
@@ -367,6 +370,7 @@
 				4D701BA02463D04700CFB314 /* ProjectTableViewCell.swift in Sources */,
 				4D701B8D2463C35A00CFB314 /* ProjectServices.swift in Sources */,
 				4D701B522463BF9100CFB314 /* AppDelegate.swift in Sources */,
+				4D701BAE246492E800CFB314 /* SpinnerViewController.swift in Sources */,
 				4D701B9E2463CC0000CFB314 /* ProjectsRouter.swift in Sources */,
 				4D701BA524645BA100CFB314 /* Reachability.swift in Sources */,
 				4D701B9A2463CC0000CFB314 /* ProjectsViewController.swift in Sources */,

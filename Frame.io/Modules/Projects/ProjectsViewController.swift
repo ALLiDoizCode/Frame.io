@@ -13,27 +13,33 @@ class ProjectsViewController: UIViewController {
     // MARK: - Properties
     var presenter: ViewToPresenterProjectsProtocol?
     var orderedTeams:[OrderedTeam] = []
+    var recent:[RecentProject] = []
     var tableView:UITableView?
     let dateFormatter = DateFormatter()
+    var spinner:SpinnerViewController?
     // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        let infoButton = UIButton(type: .infoLight)
-        infoButton.tintColor = .white
-        infoButton.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)
-        let barButton = UIBarButtonItem(customView: infoButton)
-        self.navigationItem.rightBarButtonItem = barButton
-        self.title = "Smart Investing"
+        self.title = "Frame.io"
         tableView = UITableView(frame: self.view.frame)
         tableView?.dataSource = self
         tableView?.delegate = self
         tableView?.register(ProjectTableViewCell.self, forCellReuseIdentifier: "project")
         self.view.addSubview(tableView ?? UITableView())
+        spinner = createSpinnerView()
         presenter?.refresh()
     }
     
-    @objc func infoButtonTapped() {
-        
+    func createSpinnerView() -> SpinnerViewController {
+        let child = SpinnerViewController()
+
+        // add the spinner view controller
+        addChild(child)
+        child.view.frame = view.frame
+        view.addSubview(child.view)
+        child.didMove(toParent: self)
+
+        return child
     }
 
 }
@@ -41,11 +47,9 @@ class ProjectsViewController: UIViewController {
 extension ProjectsViewController: PresenterToViewProjectsProtocol{
     
     func onFetchProjectsSuccess(projects:ProjectResponse) {
-        
-        let recent = OrderedTeam(name: "Recent")
-        
+        var sortedProjects = [Project]()
         if projects.data.count > 5 {
-            let sortedProjects = projects.data.sorted(by: { projec1, project2 in
+            sortedProjects = projects.data.sorted(by: { projec1, project2 in
                 
                 let date = Date()
                 date.getFormattedDate(format: projec1.attributes.updated_at ?? "")
@@ -56,12 +60,20 @@ extension ProjectsViewController: PresenterToViewProjectsProtocol{
                 return date.timeIntervalSince1970 > date2.timeIntervalSince1970
         
             })
-            recent.project = Array(sortedProjects.prefix(5))
+            sortedProjects = Array(sortedProjects.prefix(5))
         }
         
-        
-        
-        orderedTeams.append(recent)
+        for project in sortedProjects {
+            var name = ""
+            for team in projects.included {
+                if team.id == project.relationships.team.id {
+                   name = team.attributes.name
+                }
+            }
+            let recentProject = RecentProject(team: name, projects: project)
+            recent.append(recentProject)
+        }
+        orderedTeams.append(OrderedTeam(name:""))
         for team in projects.included {
             var relatedProjects:[Project] = []
             for project in projects.data {
@@ -72,8 +84,12 @@ extension ProjectsViewController: PresenterToViewProjectsProtocol{
             let orderedTeam = OrderedTeam(name: team.attributes.name, projects: relatedProjects)
             orderedTeams.append(orderedTeam)
         }
-        print(orderedTeams[0].name)
+        print(recent.count)
+        print(orderedTeams.count)
         tableView?.reloadData()
+        spinner?.willMove(toParent: nil)
+        spinner?.view.removeFromSuperview()
+        spinner?.removeFromParent()
     }
     
     @objc func onFetchProjectsFailure(error: String) {
@@ -87,19 +103,35 @@ extension ProjectsViewController :UITableViewDataSource,UITableViewDelegate {
         return orderedTeams.count
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return orderedTeams[section].name
+        
+        if section == 0 {
+            return "Recent"
+        }else {
+            return orderedTeams[section].name
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return orderedTeams[section].project.count
+        if section == 0 {
+            return recent.count
+        }else {
+         return orderedTeams[section].project.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let projects = orderedTeams[indexPath.section].project
-    
         let cell = tableView.dequeueReusableCell(withIdentifier: "project", for: indexPath) as? ProjectTableViewCell
-        cell?.setupCell(project:projects[indexPath.row])
+        
+        if indexPath.section == 0 {
+            
+            cell?.setupCell(project:recent[indexPath.row].project,team:recent[indexPath.row].team)
+        }else {
+            let projects = orderedTeams[indexPath.section].project
+            let project = projects[indexPath.row]
+            cell?.setupCell(project:project,team:nil)
+        }
+        
         return cell ?? ProjectTableViewCell()
     }
     
@@ -108,7 +140,7 @@ extension ProjectsViewController :UITableViewDataSource,UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return 100
     }
 
 }
