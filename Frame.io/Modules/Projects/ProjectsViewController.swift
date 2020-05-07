@@ -124,7 +124,6 @@ extension ProjectsViewController :UITableViewDataSource,UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "project", for: indexPath) as? ProjectTableViewCell
         
         if indexPath.section == 0 {
-            
             cell?.setupCell(project:recent[indexPath.row].project,team:recent[indexPath.row].team)
         }else {
             let projects = orderedTeams[indexPath.section].project

@@ -24,6 +24,8 @@ class ProjectTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
       super.prepareForReuse()
+        projecTitle.text = nil
+        projecTeam.text = nil
     }
     
     override func layoutSubviews() {
